@@ -1,0 +1,22 @@
+# PowerShell Commands Used in the Sysmon Host Detection Project
+
+----------------------------
+📌 Simulate Scheduled Task Creation (MITRE T1053.005)
+----------------------------
+schtasks /create /tn TestTaskExe /tr C:\Windows\System32\notepad.exe /sc once /st 12:30
+
+📌 Trigger the Task Manually (optional, for additional detection)
+----------------------------
+schtasks /run /tn TestTaskExe
+
+📌 Simulate .exe Execution via PowerShell (MITRE T1059)
+----------------------------
+Start-Process "C:\Windows\System32\notepad.exe"
+
+📌 View Running Tasks (optional)
+----------------------------
+schtasks /query /fo LIST /v
+
+📌 Remove the Task (optional cleanup)
+----------------------------
+schtasks /delete /tn TestTaskExe /f
