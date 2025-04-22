@@ -1,0 +1,41 @@
+EventID: 10
+Timestamp: 4/22/2025 12:20:47 PM
+Process: powershell.exe
+CommandLine: C:\WINDOWS\system32\schtasks.exe
+
+Assessment: True Positive - Simulated Powershell attack
+
+EventID: 11
+Timestamp: 4/22/2025 12:20:34 PM
+Rule: FileCreate
+ProcessID: 2280
+Image: C:\WINDOWS\system32\svchost.exe
+TargetFilename: C:\Windows\System32\Tasks\TestTaskExe
+
+Assessment: True Positive - Simulated Powershell attack
+
+EventID: 1
+Timestamp: 4/22/2025 12:20:47 PM 
+Process name: schtasks.exe
+CommandLine: "C:\WINDOWS\system32\schtasks.exe" /create/tn TestTaskExe /tr C:\Windows\System32\notepad.exe /sc once /st 12:30
+ParentProcess: powershell.exe
+Technique_ID: T1053.005 / Scheduled Task/Job
+
+Assessment: True Positive - Simulated Powershell attack
+
+EventID: 7
+Timestamp: 4/22/2025 12:20:47 PM
+Process Name: schtasks.exe
+Technique_ID: T1053 / Scheduled Task
+Image Loaded: C:\Windows\System32\taskschd.dll
+
+Assessment: True Positive - Simulated Powershell Attack
+
+EventID: 13
+Timestamp: 4/22/2025 12:20:2025 PM
+Rule: RegistryEvent
+ProcessID: 2280
+Image: C:\WINDOWS\system32\svchost.exe
+TargetObject: HKLM\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Schedule\TaskCache\Tree\TestTaskExe\Index
+
+Assessment: True Positive - Simulated Powershell attack
