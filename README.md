@@ -2,6 +2,8 @@
 
 This project focuses on leveraging **Sysmon** (System Monitor) for host-based detection of various attack techniques. By simulating real-world adversary behavior using **MITRE ATT&CK** tactics and techniques, this project demonstrates how Sysmon can be configured to log and detect these activities on a Windows machine. The goal is to build a comprehensive set of detections for a wide range of attack vectors, from **persistence** and **execution** to **lateral movement** and **defense evasion**.
 
+This project is an **extension** of my previous work, where I simulated brute-force login attempts via RDP and SSH and collected alerts through a SIEM system (ELK Stack). By expanding this to include additional attack techniques like persistence, execution, lateral movement, and defense evasion, this repository now provides a complete pipeline for detecting host-based attacks on a Windows system using Sysmon.
+
 ## Project Overview
 
 This repository contains the following:
@@ -19,8 +21,13 @@ The following attack techniques were simulated as part of this project, with Sys
 |----------------------|----------------------------------------------------|--------------------|-----------------------------------------------------------------------------|
 | **Persistence**       | Registry Run Key (T1547.001)                       | 13                 | Added a registry key to simulate persistence via startup programs.          |
 | **Execution**         | Command and Scripting Interpreter (T1059)          | 1, 7               | Executed `calc.exe` to simulate malicious code execution.                   |
-| **Lateral Movement**  | Remote Services: SMB/Windows Admin Shares (T1021.002) | 17, 18             | Created and connected to named pipes to simulate lateral movement.          |
+| **Lateral Movement**  | Remote Services: SMB/Windows Admin Shares (T1021.002) | 17, 18             | Created and connected to **dummy named pipes** to simulate lateral movement (Event ID 17). |
 | **Defense Evasion**   | Indicator Removal on Host (T1070.004)             | 26                 | Deleted a file to simulate log and artifact removal.                        |
+
+### **Important Note on Lateral Movement Simulation:**
+For lateral movement, the attack simulation involved creating and connecting to **dummy named pipes**. These pipes were not used for actual data transfer or communication but were created purely to **trigger Event ID 17**. In a real attack scenario, the pipes would be used for actual lateral movement, where an attacker might execute malicious code remotely or attempt to transfer files between systems.
+
+---
 
 ## Tools & Configuration
 
@@ -28,6 +35,8 @@ The following attack techniques were simulated as part of this project, with Sys
 - **PowerShell**: Scripts used to simulate attack behavior on the host system (e.g., registry modifications, process executions, named pipe creations).
 - **Windows Event Viewer**: Used to monitor Sysmon logs for detecting specific attack-related event IDs.
 - **MITRE ATT&CK Framework**: Used for mapping the observed Sysmon event IDs to known attack techniques, ensuring that the detection methods are aligned with industry-standard tactics.
+
+---
 
 ## Setup & Usage
 
@@ -41,7 +50,8 @@ Running the Attack Simulations
 Clone this repository to your local machine:
 
 bash
-Copy code
+Copy
+Edit
 git clone https://github.com/jonmallen313/host-based-detection-sysmon.git
 cd host-based-detection-sysmon
 Run the PowerShell scripts to simulate various attacks:
@@ -49,22 +59,26 @@ Run the PowerShell scripts to simulate various attacks:
 Persistence (Registry Run Key):
 
 powershell
-Copy code
+Copy
+Edit
 .\scripts\simulate_registry_persistence.ps1
 Execution (Launch Payload):
 
 powershell
-Copy code
+Copy
+Edit
 .\scripts\simulate_execution.ps1
 Lateral Movement (Named Pipes):
 
 powershell
-Copy code
+Copy
+Edit
 .\scripts\simulate_named_pipes.ps1
 Defense Evasion (File Deletion):
 
 powershell
-Copy code
+Copy
+Edit
 .\scripts\simulate_file_deletion.ps1
 After running each script, monitor the logs in Event Viewer under Applications and Services Logs > Microsoft > Windows > Sysmon > Operational.
 
@@ -88,15 +102,11 @@ The repository includes sample logs and screenshots showing the logs generated f
 MITRE ATT&CK Mapping
 This section maps the Sysmon event IDs generated during the attack simulations to corresponding techniques in the MITRE ATT&CK framework. The table below provides a detailed overview of the attack techniques we simulated and their corresponding event IDs.
 
+
 Tactic	Technique	Sysmon Event ID(s)	Description
 Persistence	Registry Run Key (T1547.001)	13	Added a registry key to simulate persistence via startup programs.
 Execution	Command and Scripting Interpreter (T1059)	1, 7	Executed calc.exe to simulate malicious code execution.
-Lateral Movement	Remote Services: SMB/Windows Admin Shares (T1021.002)	17, 18	Created and connected to named pipes to simulate lateral movement.
+Lateral Movement	Remote Services: SMB/Windows Admin Shares (T1021.002)	17, 18	Created and connected to dummy named pipes to simulate lateral movement (Event ID 17).
 Defense Evasion	Indicator Removal on Host (T1070.004)	26	Deleted a file to simulate log and artifact removal.
 For a more detailed overview of these techniques, visit the MITRE ATT&CK Framework.
 
-Contributing
-Feel free to fork this repository and submit pull requests with improvements, additional attack simulations, or enhanced documentation.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
