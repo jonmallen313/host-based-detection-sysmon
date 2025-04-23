@@ -1,41 +1,58 @@
-EventID: 10
-Timestamp: 4/22/2025 12:20:47 PM
-Process: powershell.exe
-CommandLine: C:\WINDOWS\system32\schtasks.exe
+Host-Based Detection with Sysmon
 
-Assessment: True Positive - Simulated Powershell attack
+Project Overview:
+- This project demonstrates the use of Sysmon for detecting malicious activities on Windows systems.
+- Sysmon (System Monitor) is a Windows system service and device driver that logs system activity to the Windows event log.
+- The project focuses on detecting key attack behaviors such as persistence, lateral movement, and the execution of malicious programs.
+- Custom Sysmon configuration is used to log relevant events such as process creation, registry modifications, and network connections.
 
-EventID: 11
-Timestamp: 4/22/2025 12:20:34 PM
-Rule: FileCreate
-ProcessID: 2280
-Image: C:\WINDOWS\system32\svchost.exe
-TargetFilename: C:\Windows\System32\Tasks\TestTaskExe
+Tools Used:
+- Sysmon (System Monitor)
+- PowerShell
+- Event Viewer
+- Windows Registry
+- Custom Scripts for Testing Attacks
 
-Assessment: True Positive - Simulated Powershell attack
+Key Concepts and Techniques:
+1. **Persistence via Registry Modification**:
+   - Created a registry entry to run a malicious program automatically on user login.
+   - Detectable by Sysmon through registry modification events and process creation logs.
 
-EventID: 1
-Timestamp: 4/22/2025 12:20:47 PM 
-Process name: schtasks.exe
-CommandLine: "C:\WINDOWS\system32\schtasks.exe" /create/tn TestTaskExe /tr C:\Windows\System32\notepad.exe /sc once /st 12:30
-ParentProcess: powershell.exe
-Technique_ID: T1053.005 / Scheduled Task/Job
+2. **Persistence via Path Injection**:
+   - Modified the system path to inject a payload, ensuring it runs automatically.
+   - Sysmon logs relevant events related to environment variable changes and process execution.
 
-Assessment: True Positive - Simulated Powershell attack
+3. **Lateral Movement using Named Pipes**:
+   - Used a pipe server and client for inter-process communication as part of lateral movement.
+   - Sysmon can detect this by monitoring inter-process communication and network connections.
 
-EventID: 7
-Timestamp: 4/22/2025 12:20:47 PM
-Process Name: schtasks.exe
-Technique_ID: T1053 / Scheduled Task
-Image Loaded: C:\Windows\System32\taskschd.dll
+4. **Execution via PowerShell**:
+   - Executed programs (e.g., Notepad and Calculator) using PowerShell’s `Start-Process` cmdlet.
+   - This action was logged by Sysmon, which detects process creation events.
 
-Assessment: True Positive - Simulated Powershell Attack
+Detection Setup:
+- Sysmon was configured to monitor and log specific events:
+   - **Event ID 1**: Process creation
+   - **Event ID 11**: File creation time (detecting file creation)
+   - **Event ID 10**: Registry key modification
+   - **Event ID 3**: Network connection events
+   - Additional custom filters were applied to detect suspicious behaviors, such as the execution of known tools or modifications to system paths.
 
-EventID: 13
-Timestamp: 4/22/2025 12:20:2025 PM
-Rule: RegistryEvent
-ProcessID: 2280
-Image: C:\WINDOWS\system32\svchost.exe
-TargetObject: HKLM\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Schedule\TaskCache\Tree\TestTaskExe\Index
+Scripts Folder:
+- Contains PowerShell scripts for demonstrating different attack techniques such as registry modifications, creating persistence via path injection, and running PowerShell commands for testing Sysmon's ability to detect these activities.
 
-Assessment: True Positive - Simulated Powershell attack
+Testing and Results:
+- The following attacks were tested and detected by Sysmon:
+   1. **Persistence via Registry**: Creating a registry entry to run a malicious executable on user login was detected.
+   2. **Persistence via Path Injection**: Modifying the system path to execute a malicious program was logged.
+   3. **Pipe Server and Client**: Running a pipe server and client for lateral movement showed Sysmon detecting inter-process communication events.
+   4. **Execution via PowerShell**: The creation of processes like Notepad and Calculator via PowerShell was logged in Sysmon.
+
+Future Enhancements:
+- Expand Sysmon configuration to cover more attack techniques and finer detection rules.
+- Implement integration with SIEM (Security Information and Event Management) systems for real-time alerts.
+
+Conclusion:
+- This project demonstrates the effectiveness of Sysmon in detecting a range of attack techniques.
+- By leveraging Sysmon's detailed logging, organizations can identify potentially malicious behaviors on their systems, providing critical information for threat hunting and incident response.
+
