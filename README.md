@@ -99,14 +99,15 @@ Event ID 26 (File Deletion)
 Screenshots
 The repository includes screenshots showing the logs generated from the simulated attack scenarios. These are located in the /screenshots directory.
 
-MITRE ATT&CK Mapping
+## MITRE ATT&CK Mapping
+
 This section maps the Sysmon event IDs generated during the attack simulations to corresponding techniques in the MITRE ATT&CK framework. The table below provides a detailed overview of the attack techniques we simulated and their corresponding event IDs.
 
+| **Tactic**            | **Technique**                                          | **Sysmon Event ID(s)** | **Description**                                                                 |
+|-----------------------|--------------------------------------------------------|------------------------|---------------------------------------------------------------------------------|
+| **Persistence**        | Registry Run Key (T1547.001)                           | 13                     | Added a registry key to simulate persistence via startup programs.              |
+| **Execution**          | Command and Scripting Interpreter (T1059)              | 1, 7                   | Executed `calc.exe` to simulate malicious code execution.                       |
+| **Lateral Movement**   | Remote Services: SMB/Windows Admin Shares (T1021.002)  | 17, 18                 | Created and connected to dummy named pipes to simulate lateral movement (Event ID 17). |
+| **Defense Evasion**    | Indicator Removal on Host (T1070.004)                  | 26                     | Deleted a file to simulate log and artifact removal.                            |
 
-Tactic	Technique	Sysmon Event ID(s)	Description
-Persistence	Registry Run Key (T1547.001)	13	Added a registry key to simulate persistence via startup programs.
-Execution	Command and Scripting Interpreter (T1059)	1, 7	Executed calc.exe to simulate malicious code execution.
-Lateral Movement	Remote Services: SMB/Windows Admin Shares (T1021.002)	17, 18	Created and connected to dummy named pipes to simulate lateral movement (Event ID 17).
-Defense Evasion	Indicator Removal on Host (T1070.004)	26	Deleted a file to simulate log and artifact removal.
-For a more detailed overview of these techniques, visit the MITRE ATT&CK Framework.
-
+For a more detailed overview of these techniques, visit the [MITRE ATT&CK Framework](https://attack.mitre.org/).
