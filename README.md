@@ -2,7 +2,7 @@
 
 This project focuses on leveraging **Sysmon** (System Monitor) for host-based detection of various attack techniques. By simulating real-world adversary behavior using **MITRE ATT&CK** tactics and techniques, this project demonstrates how Sysmon can be configured to log and detect these activities on a Windows machine. The goal is to build a comprehensive set of detections for a wide range of attack vectors, from **persistence** and **execution** to **lateral movement** and **defense evasion**.
 
-This project is an **extension** of my previous work, where I simulated brute-force login attempts via RDP and SSH and collected alerts through a SIEM system (ELK Stack). By expanding this to include additional attack techniques like persistence, execution, lateral movement, and defense evasion, this repository now provides a complete pipeline for detecting host-based attacks on a Windows system using Sysmon.
+This project is an **extension** of my previous work, where I simulated brute-force login attempts via RDP and SSH and collected alerts through a SIEM system (ELK Stack). By expanding this to include additional attack techniques like persistence, execution, lateral movement, and defense evasion, I deepen my familiarization of real world threats and what they look like from the defending side.
 
 ## Project Overview
 
@@ -96,8 +96,8 @@ Event ID 18 (Named Pipe Connection)
 
 Event ID 26 (File Deletion)
 
-Sample Logs
-The repository includes sample logs and screenshots showing the logs generated from the simulated attack scenarios. These are located in the /screenshots directory.
+Screenshots
+The repository includes screenshots showing the logs generated from the simulated attack scenarios. These are located in the /screenshots directory.
 
 MITRE ATT&CK Mapping
 This section maps the Sysmon event IDs generated during the attack simulations to corresponding techniques in the MITRE ATT&CK framework. The table below provides a detailed overview of the attack techniques we simulated and their corresponding event IDs.
