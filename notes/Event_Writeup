@@ -51,8 +51,7 @@ Process name: powershell.exe
 CommandLine: Start-Process calc.exe
 
 Assessment: True Positive - Execution of calc.exe via PowerShell
-Context: The execution of calc.exe via PowerShell is logged by Sysmon as a standard process creation event. 
-This is part of the simulated attack chain to test detection of command execution in a host-based detection scenario.
+Context: This event logs the execution of the Calculator application (calc.exe) through PowerShell, simulating a benign program execution as part of the attack chain.
 
 EventID: 1
 Timestamp: 4/23/2025 9:16:02 AM
@@ -60,59 +59,49 @@ Process name: powershell.exe
 CommandLine: Start-Process notepad.exe
 
 Assessment: True Positive - Execution of notepad.exe via PowerShell
-Context: Similar to the previous event, launching notepad.exe via PowerShell is part of the simulated attack to 
-validate detection capabilities of Sysmon on executable launches through PowerShell scripts.
-
-EventID: 10
-Timestamp: 4/23/2025 9:17:12 AM
-Process name: powershell.exe
-TargetFilename: C:\Users\username\AppData\Local\Temp\malicious.exe
-
-Assessment: True Positive - Simulated persistence via file creation
-Context: A malicious executable was created in the Temp directory, simulating an attacker establishing persistence. 
-Sysmon logs this as a file creation event, which is crucial for detecting malicious file drops.
-
-EventID: 10
-Timestamp: 4/23/2025 9:17:28 AM
-Process name: powershell.exe
-TargetFilename: C:\Windows\System32\Tasks\MaliciousTask.exe
-
-Assessment: True Positive - Persistence mechanism via task creation
-Context: A malicious executable was placed in the Scheduled Tasks folder, emulating the creation of a persistence mechanism. 
-Sysmon logs this file creation event, which can be used for later task execution detection.
+Context: This event logs the execution of the Notepad application (notepad.exe) through PowerShell, simulating another benign program execution in the attack chain.
 
 EventID: 13
-Timestamp: 4/23/2025 9:18:07 AM
+Timestamp: 4/23/2025 9:17:12 AM
 Process name: powershell.exe
 RegistryKey: HKCU\Software\Microsoft\Windows\CurrentVersion\Run\MaliciousApp
 
 Assessment: True Positive - Registry modification for persistence
-Context: A registry entry was created under the Run key to ensure the malicious application runs on every user login. 
-Sysmon detected this registry modification, crucial for detecting persistence via registry keys.
-
-EventID: 1
-Timestamp: 4/23/2025 9:19:12 AM
-Process name: powershell.exe
-CommandLine: "C:\Windows\System32\schtasks.exe" /create /tn MaliciousTask /tr C:\Users\username\AppData\Local\Temp\malicious.exe /sc once /st 09:20
-
-Assessment: True Positive - Scheduled task creation for malicious executable
-Context: This event logs the creation of a scheduled task that runs the malicious executable created earlier. 
-Sysmon logs this as a process creation event associated with a scheduled task creation, highlighting the attacker’s method of ensuring the persistence of their malicious executable.
+Context: A registry key was created to ensure the malicious application runs automatically when the user logs in. Sysmon detected this registry modification, highlighting a persistence mechanism.
 
 EventID: 7
-Timestamp: 4/23/2025 9:19:24 AM
+Timestamp: 4/23/2025 9:18:05 AM
 Process name: schtasks.exe
 Technique_ID: T1053 / Scheduled Task
 Image Loaded: C:\Windows\System32\taskschd.dll
 
 Assessment: True Positive - Scheduled task creation detected
-Context: The execution of the schtasks.exe command to create a scheduled task was detected by Sysmon. 
-This event is significant for detecting the use of scheduled tasks to maintain persistence or execute malicious code at a specified time.
+Context: Sysmon detected the execution of schtasks.exe used to create a scheduled task that would execute a malicious executable at a specified time. This event is part of the attacker’s persistence mechanism.
 
-EventID: 10
-Timestamp: 4/23/2025 9:20:14 AM
-Process name: svchost.exe
+EventID: 17
+Timestamp: 4/23/2025 9:19:25 AM
+Process name: powershell.exe
 TargetFilename: C:\Windows\System32\Tasks\MaliciousTask.exe
+
+Assessment: True Positive - Malicious task file creation
+Context: A malicious task file (MaliciousTask.exe) was created in the Task Scheduler directory. Sysmon logged this event as part of the attacker’s persistence strategy.
+
+EventID: 18
+Timestamp: 4/23/2025 9:20:14 AM
+Process name: schtasks.exe
+TargetFilename: C:\Windows\System32\Tasks\MaliciousTask.exe
+CommandLine: schtasks.exe /create /tn MaliciousTask /tr C:\Users\username\AppData\Local\Temp\malicious.exe /sc once /st 09:20
+
+Assessment: True Positive - Task execution command to trigger malicious executable
+Context: Sysmon detected the execution of schtasks.exe used to schedule the malicious executable (malicious.exe) to run at a specific time. This is an example of persistence and execution through scheduled tasks.
+
+EventID: 26
+Timestamp: 4/23/2025 9:21:50 AM
+Process name: powershell.exe
+TargetFilename: C:\Users\username\AppData\Local\Temp\malicious.exe
+
+Assessment: True Positive - Deletion of malicious file
+Context: The malicious file dropped in the Temp directory (malicious.exe) was deleted as part of the cleanup phase. Sysmon detected the file deletion event, simulating an attacker removing traces of their presence after completing the attack.
 
 Assessment: True Positive - Malicious task execution via scheduled task
 Context: The malicious task executed at the specified time, and Sysmon logged the event as a process creation for svchost.exe, which launched the malicious task. This is a critical event in tracking the success of the attacker’s persistence mechanism.
