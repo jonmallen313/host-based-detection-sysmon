@@ -1,4 +1,4 @@
-# 📚 Resources
+# Resources
 
 This folder holds all relevant resources used or referenced during the project:
 
