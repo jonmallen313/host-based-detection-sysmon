@@ -1,4 +1,4 @@
-# 📸 Screenshots
+# Screenshots
 
 This folder contains key screenshots from the Windows 11 VM and tools used in this project.
 
